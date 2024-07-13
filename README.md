@@ -1,4 +1,16 @@
+# nextjs-react-query-playground
+
+A react query playground using Next.js.
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+## environment
+
+- [macOS 13.6.7](https://www.apple.com/macos/ventura/)
+- [Visual Studio Code 1.85.1](https://code.visualstudio.com/)
+- [nvm 0.39.7, node 20.10.0, npm 10.2.3](https://nodejs.org/en/)
+- [Next.js 14.2.5](https://nextjs.org/)
+- [React.js 18.3.1](https://react.dev/)
 
 ## Getting Started
 
