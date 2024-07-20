@@ -11,13 +11,13 @@ const handler = async (
 
   switch (method) {
     case 'GET': {
-      const posts = getPosts();
+      const posts = await getPosts();
       res.status(200).json(posts);
       break;
     }
     case 'POST': {
       const data = req.body;
-      const newPost = createPost(data);
+      const newPost = await createPost(data);
       res.status(201).json(newPost);
       break;
     }

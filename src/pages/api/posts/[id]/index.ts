@@ -17,7 +17,7 @@ const handler = async (
 
   switch (method) {
     case 'GET': {
-      const post = getPost(Number(id));
+      const post = await getPost(Number(id));
       if (!post) {
         res.status(404).end(`Post with ID ${id} Not Found`);
         break;
@@ -28,7 +28,7 @@ const handler = async (
     }
     case 'PUT': {
       const data = req.body;
-      const updatedPost = updatePost(Number(id), data);
+      const updatedPost = await updatePost(Number(id), data);
       if (!updatedPost) {
         res.status(404).end(`Post with ID ${id} Not Found`);
         break;
@@ -39,7 +39,7 @@ const handler = async (
     }
     case 'PATCH': {
       const data = req.body;
-      const updatedPost = partUpdatePost(Number(id), data);
+      const updatedPost = await partUpdatePost(Number(id), data);
       if (!updatedPost) {
         res.status(404).end(`Post with ID ${id} Not Found`);
         break;
@@ -49,7 +49,7 @@ const handler = async (
       break;
     }
     case 'DELETE': {
-      const deletedPost = deletePost(Number(id));
+      const deletedPost = await deletePost(Number(id));
       if (!deletedPost) {
         res.status(404).end(`Post with ID ${id} Not Found`);
         break;

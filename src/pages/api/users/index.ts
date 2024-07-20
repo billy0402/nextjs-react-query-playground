@@ -8,7 +8,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<User[]>) => {
 
   switch (method) {
     case 'GET': {
-      const users = getUsers();
+      const users = await getUsers();
       res.status(200).json(users);
       break;
     }
