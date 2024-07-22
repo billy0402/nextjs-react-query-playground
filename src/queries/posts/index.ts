@@ -60,11 +60,12 @@ export const usePostPartUpdate = (id: number) => {
   });
 };
 
-export const usePostDestroy = () => {
+export const usePostDestroy = (onSuccess: Function) => {
   return useMutation({
     mutationFn: (id: number) => apiPostDestroy(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.list() });
+      onSuccess();
     },
   });
 };

@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 
-import type { NextPage } from 'next';
+import type { GetServerSideProps, NextPage } from 'next';
+
+import { useRouter } from 'next/router';
 
 import { Link } from '@chakra-ui/next-js';
 import {
@@ -12,13 +14,19 @@ import {
   useToast,
 } from '@chakra-ui/react';
 
-import { usePostDestroy, usePostList } from '@/queries/posts';
+import type { Post } from '@/models/post';
+import { usePostDestroy } from '@/queries/posts';
+import { apiPostList } from '@/services/posts';
 
-const HomePage: NextPage = () => {
+type Props = {
+  posts: Post[];
+};
+
+const HomePage: NextPage<Props> = ({ posts: postList }) => {
+  const router = useRouter();
   const toast = useToast();
 
-  const { data: postList } = usePostList();
-  const destroyPost = usePostDestroy();
+  const destroyPost = usePostDestroy(() => router.replace(router.asPath));
 
   useEffect(() => {
     if (!destroyPost.isSuccess) return;
@@ -63,3 +71,8 @@ const HomePage: NextPage = () => {
 };
 
 export default HomePage;
+
+export const getServerSideProps = (async () => {
+  const posts = await apiPostList();
+  return { props: { posts } };
+}) satisfies GetServerSideProps<Props>;

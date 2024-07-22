@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import type { NextPage } from 'next';
+import type { GetServerSideProps, NextPage } from 'next';
 
 import { useRouter } from 'next/router';
 
@@ -20,28 +20,32 @@ import {
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 
-import type { EditPost } from '@/models/post';
-import { usePostCreate, usePostRetrieve, usePostUpdate } from '@/queries/posts';
-import { useUserList } from '@/queries/users';
+import type { EditPost, Post } from '@/models/post';
+import type { User } from '@/models/user';
+import { usePostCreate, usePostUpdate } from '@/queries/posts';
+import { apiPostRetrieve } from '@/services/posts';
+import { apiUserList } from '@/services/users';
 
-const PostDetailPage: NextPage = () => {
+type Props = {
+  post: Post | null;
+  users: User[];
+};
+
+const PostDetailPage: NextPage<Props> = ({ post, users }) => {
   const router = useRouter();
   const toast = useToast();
 
   const { id } = router.query as { id: string };
   const isCreate = id === 'create';
 
-  const { data: post } = usePostRetrieve(Number(id));
-  const { data: users } = useUserList();
   const createPost = usePostCreate();
   const updatePost = usePostUpdate(Number(id));
 
   const {
     register,
-    reset,
     handleSubmit,
     formState: { errors },
-  } = useForm<EditPost>();
+  } = useForm<EditPost>({ defaultValues: post ?? undefined });
 
   const onSubmit = (data: any) => {
     if (isCreate) {
@@ -50,12 +54,6 @@ const PostDetailPage: NextPage = () => {
       updatePost.mutate(data);
     }
   };
-
-  useEffect(() => {
-    if (!post || !users) return;
-
-    reset(post);
-  }, [post, reset, users]);
 
   useEffect(() => {
     if (!createPost.isSuccess) return;
@@ -145,3 +143,10 @@ const PostDetailPage: NextPage = () => {
 };
 
 export default PostDetailPage;
+
+export const getServerSideProps = (async ({ query }) => {
+  const { id } = query as { id: string };
+  const post = id !== 'create' ? await apiPostRetrieve(Number(id)) : null;
+  const users = await apiUserList();
+  return { props: { post, users } };
+}) satisfies GetServerSideProps<Props>;
