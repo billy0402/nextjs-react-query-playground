@@ -20,11 +20,11 @@ import {
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 
+import { getPost } from '@/helpers/posts';
+import { getUsers } from '@/helpers/users';
 import type { EditPost, Post } from '@/models/post';
 import type { User } from '@/models/user';
 import { usePostCreate, usePostUpdate } from '@/queries/posts';
-import { apiPostRetrieve } from '@/services/posts';
-import { apiUserList } from '@/services/users';
 
 type Props = {
   post: Post | null;
@@ -146,7 +146,7 @@ export default PostDetailPage;
 
 export const getServerSideProps = (async ({ query }) => {
   const { id } = query as { id: string };
-  const post = id !== 'create' ? await apiPostRetrieve(Number(id)) : null;
-  const users = await apiUserList();
+  const post = id !== 'create' ? ((await getPost(Number(id))) ?? null) : null;
+  const users = await getUsers();
   return { props: { post, users } };
 }) satisfies GetServerSideProps<Props>;

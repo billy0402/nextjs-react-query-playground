@@ -14,9 +14,9 @@ import {
   useToast,
 } from '@chakra-ui/react';
 
+import { getPosts } from '@/helpers/posts';
 import type { Post } from '@/models/post';
 import { usePostDestroy } from '@/queries/posts';
-import { apiPostList } from '@/services/posts';
 
 type Props = {
   posts: Post[];
@@ -73,6 +73,6 @@ const HomePage: NextPage<Props> = ({ posts: postList }) => {
 export default HomePage;
 
 export const getServerSideProps = (async () => {
-  const posts = await apiPostList();
+  const posts = await getPosts();
   return { props: { posts } };
 }) satisfies GetServerSideProps<Props>;
