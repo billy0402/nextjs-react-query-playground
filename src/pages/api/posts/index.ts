@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { createPost, getPosts } from '@/helpers/posts';
+import { createPost, getPosts } from '@/db/queries/posts';
 import type { Post } from '@/models/post';
 
 const handler = async (

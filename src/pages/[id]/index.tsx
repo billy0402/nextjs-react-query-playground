@@ -47,7 +47,8 @@ const PostDetailPage: NextPage = () => {
     if (isCreate) {
       createPost.mutate(data);
     } else {
-      updatePost.mutate(data);
+      const { id, ...editPost } = data;
+      updatePost.mutate(editPost);
     }
   };
 

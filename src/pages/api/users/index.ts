@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { getUsers } from '@/helpers/users';
+import { getUsers } from '@/db/queries/users';
 import type { User } from '@/models/user';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse<User[]>) => {

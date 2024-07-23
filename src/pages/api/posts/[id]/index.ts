@@ -5,7 +5,7 @@ import {
   getPost,
   partUpdatePost,
   updatePost,
-} from '@/helpers/posts';
+} from '@/db/queries/posts';
 import type { Post } from '@/models/post';
 
 const handler = async (
