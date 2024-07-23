@@ -9,3 +9,51 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+model Post {
+  id     Int    @id @default(autoincrement())
+  title  String
+  body   String
+  user   User   @relation(fields: [userId], references: [id])
+  userId Int
+}
+
+model User {
+  id        Int     @id @default(autoincrement())
+  name      String
+  username  String  @unique
+  email     String  @unique
+  address   Address @relation(fields: [addressId], references: [id])
+  addressId Int
+  phone     String
+  website   String
+  company   Company @relation(fields: [companyId], references: [id])
+  companyId Int
+  Post      Post[]
+}
+
+model Address {
+  id      Int    @id @default(autoincrement())
+  street  String
+  suite   String
+  city    String
+  zipcode String
+  geo     Geo    @relation(fields: [geoId], references: [id])
+  geoId   Int
+  user    User[]
+}
+
+model Geo {
+  id      Int       @id @default(autoincrement())
+  lat     String
+  lng     String
+  address Address[]
+}
+
+model Company {
+  id          Int    @id @default(autoincrement())
+  name        String
+  catchPhrase String
+  bs          String
+  user        User[]
+}
